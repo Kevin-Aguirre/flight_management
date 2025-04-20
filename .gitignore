@@ -1,0 +1,23 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/flightmanagement_fe/node_modules
+/flightmanagement_fe/.pnp
+/flightmanagement_fe.pnp.js
+
+# testing
+/flightmanagement_fe/coverage
+
+# production
+/flightmanagement_fe/build
+
+# misc
+flightmanagement_fe/.DS_Store
+flightmanagement_fe/.env.local
+flightmanagement_fe/.env.development.local
+flightmanagement_fe/.env.test.local
+flightmanagement_fe/.env.production.local
+
+flightmanagement_fe/npm-debug.log*
+flightmanagement_fe/yarn-debug.log*
+flightmanagement_fe/yarn-error.log*
