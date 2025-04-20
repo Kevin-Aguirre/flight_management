@@ -20,21 +20,21 @@ app.config.update(
 
 app.secret_key = 'some key that you will never guess'
 CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
-# Configure MySQL
 
-"""
-mysql -u root -p
-SHOW DATABASES;
-USE class_proj;
-SHOW TABLES;
-"""
+
+DB_HOST = 'localhost'
+DB_USER = 'root'
+DB_PWD = 'password'
+DB_DB = 'class_proj'
+
+
 
 def hash_password(password):
     return hashlib.md5(password.encode()).hexdigest()
 
 @app.route('/api/get-reports', methods=['GET'])
 def getReports():
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
     query = "SELECT * FROM Ticket WHERE email IS NOT NULL;"
     cursor.execute(query)
@@ -44,7 +44,7 @@ def getReports():
 
 @app.route('/api/get-flights', methods=['GET'])
 def getFlights():
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
 
 
@@ -113,7 +113,7 @@ def getFlights():
 
 @app.route('/api/get-ratings', methods=['GET'])
 def getRatings():
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()        
 
     airline_name = request.args.get('airline_name')
@@ -143,7 +143,7 @@ def getRatings():
 
 @app.route('/api/get-customers', methods=['GET'])
 def getCustomers():
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()    
 
     airline_name = request.args.get('airline_name')
@@ -173,7 +173,7 @@ def getCustomers():
 
 @app.route('/api/edit-flight-status', methods=['POST'])
 def editFlightStatus():
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()    
 
     airline_name = request.json.get('airline_name')
@@ -199,7 +199,7 @@ def editFlightStatus():
 
 @app.route('/api/cancel-flight', methods=['POST'])
 def cancelFlight():
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()    
 
     airline_name = request.json.get('airline_name')
@@ -233,7 +233,7 @@ def cancelFlight():
 
 @app.route('/api/add-plane', methods=['POST'])
 def addplane():
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()    
 
     plane_ID = str(random.randint(1000000, 9999999))
@@ -250,7 +250,7 @@ def addplane():
 
 @app.route('/api/add-airport', methods=['POST'])
 def addAirport():
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()    
 
     code = str(random.randint(1000000, 9999999))
@@ -268,7 +268,7 @@ def addAirport():
 
 @app.route('/api/get-airports', methods=['GET'])
 def getAirports():
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()    
     query = "SELECT * FROM Airport;"
     cursor.execute(query)    
@@ -280,7 +280,7 @@ def getAirports():
 
 @app.route('/api/get-planes/<airline_name>', methods=['GET'])
 def getPlanes(airline_name):
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()    
     query = "SELECT * FROM Airplane WHERE airline_name = %s;"
     cursor.execute(query, (airline_name,))
@@ -291,7 +291,7 @@ def getPlanes(airline_name):
 
 @app.route('/api/create-flight', methods=['POST'])
 def addFlight():
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
 
     source_port_code = request.json.get('source_port_code')
@@ -343,7 +343,7 @@ def addFlight():
 # huge issue with this, you will be able to make infinite tickets 
 @app.route('/api/purchase-flight', methods=['POST'])
 def purchaseFlight():
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
 
     airline_name = request.json.get('airline_name')
@@ -427,7 +427,7 @@ def purchaseFlight():
 
 @app.route('/api/submit-review', methods=['POST'])
 def submitReview():
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
 
 
@@ -465,7 +465,7 @@ def submitReview():
 
 @app.route('/api/my-flights/<email>', methods=['GET'])
 def getMyFlights(email):
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
 
     query = """
@@ -505,7 +505,7 @@ def getMyFlights(email):
 
 @app.route('/api/future-flights', methods=['GET'])
 def getFutureFlights():
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
 
 
@@ -577,7 +577,7 @@ def getFutureFlights():
 # staff registration    
 @app.route('/api/register-staff', methods = ['POST'])
 def registerStaff():
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
 
     username = request.json.get('username')
@@ -607,7 +607,7 @@ def registerStaff():
 # customer registration 
 @app.route('/api/register-customer', methods = ['POST'])
 def registerCustomer():
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
 
     email = request.json.get('email')
@@ -646,7 +646,7 @@ def loginStaff():
     username = request.json.get('username')
     pwd = hash_password(request.json.get('pwd'))
 
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
 
     query = 'SELECT * FROM AirlineStaff WHERE username = %s and pwd = %s'
@@ -666,7 +666,7 @@ def loginCustomer():
     email = request.json.get('email')
     pwd = hash_password(request.json.get('pwd'))
 
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
 
     query = 'SELECT * FROM Customer WHERE email = %s and pwd = %s'
@@ -688,7 +688,7 @@ def logout():
 
 @app.route('/api/get-airlines', methods=['GET'])
 def getAirlines():
-    conn = pymysql.connect(host='localhost', user='root', password='password', db='class_proj', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PWD, db=DB_DB, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
     query = "SELECT * FROM Airline;"
     cursor.execute(query)
@@ -746,4 +746,11 @@ DELETE FROM Flight;
         
 
 
+"""
+
+"""
+mysql -u root -p
+SHOW DATABASES;
+USE class_proj;
+SHOW TABLES;
 """
