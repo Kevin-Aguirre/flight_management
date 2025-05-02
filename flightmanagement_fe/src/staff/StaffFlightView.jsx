@@ -83,7 +83,7 @@ export const StaffFlightView = ({user, flights, setFlights}) => {
     }
 
     const flight_elems = filteredFlights.map((flight) => (
-        <div className="mt-5 bg-gray-200 rounded-lg my-1 py-4 px-5 flex flex-col">
+        <div className="mt-5 bg-gray-200 rounded-lg my-1 py-4 px-5 flex flex-row items-center">
             <Flight
                 airline_name = {flight.airline_name}
                 departure_time = {flight.departure_time}
@@ -101,20 +101,20 @@ export const StaffFlightView = ({user, flights, setFlights}) => {
             
             {user.user.airline_name == flight.airline_name
                 &&
-                <>
+                <div className="flex flex-col">
                     <button 
                         onClick={() => {
                             setSelectedEditFlight(flight)
                             setShowEditModal(true)
                         }}
-                        className="w-full rounded-md text-center text-xl font-bold py-4 mt-2 bg-purple-300"
+                        className="w-60 mx-1 rounded-md text-center text-l font-bold py-3 mt-2 bg-purple-300"
                     >Edit</button>
                     <button
                         onClick={() => {
                             setSelectedViewCustFlight(flight)
                             setShowViewModal(true)
                         }}
-                        className="w-full rounded-md text-center text-xl font-bold py-4 mt-2 bg-purple-300"
+                        className="w-60 mx-1 rounded-md text-center text-l font-bold py-3 mt-2 bg-purple-300"
                     >
                         View Passengers
                     </button>
@@ -123,11 +123,11 @@ export const StaffFlightView = ({user, flights, setFlights}) => {
                             setSelectedViewRatingFlight(flight)
                             setShowRatingModal(true)
                         }}
-                        className="w-full rounded-md text-center text-xl font-bold py-4 mt-2 bg-purple-300"
+                        className="w-60 mx-1 rounded-md text-center text-l font-bold py-3 mt-2 bg-purple-300"
                     >
                         View Ratings 
                     </button>
-                </>
+                </div>
             }
         </div>
     ))

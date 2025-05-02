@@ -4,14 +4,15 @@ import { StaffFlightView } from "../staff/StaffFlightView"
 import { AnonymousFlightView } from "../anon/AnonymousFlightView"
 
 const renderFlightView = (user, flights, setFlights) => {
-    const futureFlights = flights.filter((f) => new Date(f.departure_time) > new Date())
+    const customerFlights = flights.filter((f) => new Date(f.departure_time) > new Date()) 
+    const staffFlights = flights.filter((f) => (f.airline_name === user.user.airline_name) || (new Date(f.departure_time) > new Date()))
     switch (user?.type) {
       case "customer":
-        return <UserFlightView user={user} flights={futureFlights} setFlights={setFlights}/>;
+        return <UserFlightView user={user} flights={customerFlights} setFlights={setFlights}/>;
       case "staff":
-        return <StaffFlightView user={user} flights={flights} setFlights={setFlights}/>;  
+        return <StaffFlightView user={user} flights={staffFlights} setFlights={setFlights}/>;  
       default:
-        return <AnonymousFlightView user={user} flights={futureFlights}/>;
+        return <AnonymousFlightView user={user} flights={customerFlights}/>;
     }
   };
 

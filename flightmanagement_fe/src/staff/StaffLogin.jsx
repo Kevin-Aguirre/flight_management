@@ -1,12 +1,22 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 
 export default function StaffLogin({ user, setUser }) {
     const navigate = useNavigate();
+    const [airlines, setAirlines] = useState([])
     const [form, setForm] = useState({
         username: "",
         pwd: "",
+        airline_name: "",
     })
+
+    useEffect(() => {
+        fetch("http://127.0.0.1:5002/api/get-airlines")
+            .then(res => res.json())
+            .then(data => {
+                setAirlines(data)
+            })
+    }, [])
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -53,6 +63,23 @@ export default function StaffLogin({ user, setUser }) {
             </h1>
             <hr/>
             <form className="mt-4" onSubmit={handleSubmit}>
+                <div className="flex mb-1 rounded-md py-4 px-4 text-xl font-bold bg-gray-300 items-center">
+                    <label className="mr-5">Airline Name:</label>
+                    <select
+                        required
+                        onChange={handleChange}
+                        name="airline_name"
+                        value={form.airline_name}
+                        className="p-2 rounded-md bg-white"
+                    >
+                        <option value="">Select an Airline:</option>
+                        {airlines.map((airline) => (
+                            <option key={airline.airline_name} value={airline.airline_name}>
+                                {airline.airline_name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
                 <div className="flex mb-1 rounded-md py-4 px-4 text-xl font-bold bg-gray-300 items-center">
                     <label className="mr-5">Username:</label>
                     <input

@@ -1,6 +1,6 @@
 export default function Flight(props) {
     return (
-        <>
+        <div className="flex flex-col w-full ">
             <div className="flex flex-row text-center">
                 <div className="text-xl bg-blue-300 w-full py-1 rounded-md mr-1"><strong>Airline:</strong> {props.airline_name}</div>
                 <div className="text-xl bg-blue-300 w-full py-1 rounded-md mr-1"><strong>Departure Time:</strong> {props.departure_time}</div>
@@ -43,6 +43,6 @@ export default function Flight(props) {
                 <div className="bg-blue-300 w-full py-1 rounded-md mr-1"><strong>Flight #: </strong>{props.flight_number}</div>
                 <div className="bg-blue-300 w-full py-1 rounded-md mr-1"><strong>Status: </strong>{props.flight_status}</div>
             </div>
-        </>
+        </div>
     )
 }

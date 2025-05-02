@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 export default function StaffRegister() {
     const [airlines, setAirlines] = useState([])
+    const [isNewAirline, setIsNewAirline] = useState(false);
 
     useEffect(() => {
         fetch("http://127.0.0.1:5002/api/get-airlines")
@@ -115,20 +116,53 @@ export default function StaffRegister() {
                 </div>
                 <div className="flex mb-1 rounded-md py-4 px-4 text-xl font-bold bg-gray-300 items-center">
                     <label className="mr-5">Airline Name:</label>
-                    <select
-                        required
-                        onChange={handleChange}
-                        name="airline_name"
-                        value={form.airline_name}
-                        className="p-2 rounded-md bg-white"
-                    >
-                        <option value="">Select an Airline:</option>
-                        {airlines.map((airline) => (
-                            <option key={airline.airline_name} value={airline.airline_name}>
-                                {airline.airline_name}
-                            </option>
-                        ))}
-                    </select>
+                    {!isNewAirline ? (
+                        <>
+                            <select
+                                required={!isNewAirline}
+                                onChange={(e) => {
+                                    if (e.target.value === "__new") {
+                                        setIsNewAirline(true);
+                                        setForm(prev => ({ ...prev, airline_name: "" }));
+                                    } else {
+                                        setForm(prev => ({ ...prev, airline_name: e.target.value }));
+                                    }
+                                }}
+                                name="airline_name"
+                                value={form.airline_name}
+                                className="p-2 rounded-md bg-white"
+                            >
+                                <option value="">Select an Airline:</option>
+                                {airlines.map((airline) => (
+                                    <option key={airline.airline_name} value={airline.airline_name}>
+                                        {airline.airline_name}
+                                    </option>
+                                ))}
+                                <option value="__new">+ Create New Airline</option>
+                            </select>
+                        </>
+                    ) : (
+                        <>
+                            <input
+                                type="text"
+                                name="airline_name"
+                                placeholder="Enter new airline name"
+                                value={form.airline_name}
+                                onChange={handleChange}
+                                className="p-2 rounded-md"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setIsNewAirline(false);
+                                    setForm(prev => ({ ...prev, airline_name: "" }));
+                                }}
+                                className="mt-2 bg-gray-200 px-3 py-1 rounded-md text-sm"
+                            >
+                                Back to Airline List
+                            </button>
+                        </>
+                    )}
                 </div>
                 <div className="flex mb-1 rounded-md py-4 px-4 text-xl font-bold bg-gray-300 items-center">
                     <label className="mr-5">Password:</label>

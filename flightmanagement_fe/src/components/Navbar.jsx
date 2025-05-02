@@ -9,8 +9,8 @@ export default function Navbar({user, setUser}) {
         const res = await fetch('http://127.0.0.1:5002/api/logout')
         const data = await res.json()
         alert(data.message)
-        setUser(null)
         navigate('/')
+        setUser(null)
         localStorage.removeItem('data')
     }
 

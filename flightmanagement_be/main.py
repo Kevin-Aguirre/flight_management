@@ -19,6 +19,9 @@ app.config.update(
 app.secret_key = 'some key that you will never guess'
 CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
 
+"""
+mysql -u root -p
+"""
 
 DB_HOST = 'localhost'
 DB_USER = 'root'
@@ -825,7 +828,10 @@ def registerStaff():
     first_name = request.json.get('first_name')
     last_name = request.json.get('last_name')
     date_of_birth = request.json.get('date_of_birth')
-    date_of_birth_obj = datetime.strptime(date_of_birth, "%Y-%m-%d").date()
+    date_of_birth_obj = datetime.strptime(
+        date_of_birth, 
+        "%Y-%m-%d"
+    ).date()
     phone_numbers = request.json.get('phone_numbers')
     emails = request.json.get('emails')
 
@@ -834,8 +840,11 @@ def registerStaff():
     WHERE username = %s 
     AND airline_name = %s
     """
-    cursor.execute(check_query
-                   , (username, airline_name,))
+    cursor.execute(
+        check_query, 
+        (username, 
+         airline_name,)
+    )
     if cursor.fetchone():
         cursor.close()
         conn.close()
@@ -843,25 +852,61 @@ def registerStaff():
             "error": "Staff with this username already exists."
         }, 409
 
+    check_airline_query = """
+    SELECT * FROM Airline 
+    WHERE airline_name = %s;
+    """
+    cursor.execute(
+        check_airline_query,
+        (airline_name)
+    )
+    if not cursor.fetchone():
+        insert_new_airline_query = """
+        INSERT INTO Airline 
+        VALUES (%s);
+        """
+        cursor.execute(
+            insert_new_airline_query,
+            (airline_name)
+        )
+        conn.commit()
+
     query = """
     INSERT INTO AirlineStaff VALUES 
     (%s, %s, %s, %s, %s, %s);
     """
-    cursor.execute(query, 
-                   (username, 
-                    airline_name, 
-                    pwd, 
-                    first_name, 
-                    last_name, 
-                    date_of_birth_obj))
+    cursor.execute(
+        query, 
+        (username, 
+        airline_name, 
+        pwd, 
+        first_name, 
+        last_name, 
+        date_of_birth_obj)
+    )
 
-    insert_phone_query = "INSERT INTO AirlineStaffPhone VALUES (%s, %s, %s);"
+    insert_phone_query = """
+    INSERT INTO AirlineStaffPhone 
+    VALUES (%s, %s, %s);
+    """
     for phone_number in phone_numbers:
-        cursor.execute(insert_phone_query, (username, airline_name, phone_number))
+        cursor.execute(
+            insert_phone_query, 
+            (username, 
+             airline_name, 
+             phone_number)
+        )
 
-    insert_email_query = "INSERT INTO AirlineStaffEmail VALUES (%s, %s, %s);"
+    insert_email_query = """
+    INSERT INTO AirlineStaffEmail 
+    VALUES (%s, %s, %s);
+    """
     for email in emails:
-        cursor.execute(insert_email_query, (username, airline_name, email))
+        cursor.execute(
+            insert_email_query, 
+            (username, 
+             airline_name, 
+             email))
 
     conn.commit()
     cursor.close()
@@ -925,6 +970,7 @@ def registerCustomer():
 #Authenticates the login
 @app.route('/api/login-staff', methods=['POST'])
 def loginStaff():
+    airline_name = request.json.get('airline_name')
     username = request.json.get('username')
     pwd = hash_password(request.json.get('pwd'))
 
@@ -941,9 +987,15 @@ def loginStaff():
     SELECT * 
     FROM AirlineStaff 
     WHERE username = %s 
-    AND pwd = %s;
+    AND pwd = %s
+    AND airline_name = %s;
     """
-    cursor.execute(query, (username, pwd))
+    cursor.execute(
+        query, 
+        (username, 
+         pwd, 
+         airline_name)
+    )
     data = cursor.fetchone()
     cursor.close()
 
