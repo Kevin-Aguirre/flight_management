@@ -1,6 +1,16 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
-export default function AddAirport() {
+export default function AddAirport({ user, setUser }) {
+    const navigate = useNavigate()
+    
+    useEffect(() => {
+        if (user?.type !== "staff") {
+            navigate('/')
+        }
+        
+    })
+    
     const [form, setForm] = useState({
         port_name: "",
         city: "",

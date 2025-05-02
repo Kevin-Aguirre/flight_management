@@ -39,7 +39,7 @@ export default function StaffLogin({ user, setUser }) {
                     alert('Successfully logged in as staff.')
                     localStorage.setItem('data', JSON.stringify(data))
                     setUser(data)
-                    navigate('/my-flights') 
+                    navigate('/') 
                 } else {
                     alert(data.error)   
                 }

@@ -18,20 +18,45 @@ export default function StaffRegister() {
         first_name: "",
         last_name: "",
         date_of_birth: "",
+        phone_numbers: [""],
+        emails: [""]
     })
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        setForm((prev) => ({...prev, [name]: value}))
+    }
+
+    const handleArrayChange = (e, field, index)  => {
+        const newArr = [...form[field]]
+        newArr[index] = e.target.value;
+        setForm((prev) => ({
+            ...prev, 
+            [field]: newArr,
+        }))
+
+    }
+    
+    const addField = (field) => {
         setForm((prev) => ({
             ...prev,
-            [name]: value
+            [field]: [...prev[field], ""]
         }))
+    }
+
+    const removeField = (field, index) => {
+        setForm((prev) => {
+            const newArray = [...prev[field]]
+            newArray.splice(index, 1)
+            return {...prev, [field]: newArray}
+        })
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
         alert(JSON.stringify(form))
         for (const p in form) {
+            if (Array.isArray(form[p])) continue;
             if (form[p].length === 0) {
                 alert("All fields must be given a value")
                 return
@@ -56,6 +81,8 @@ export default function StaffRegister() {
                         first_name: "",
                         last_name: "",
                         date_of_birth: "",
+                        phone_numbers: [""],
+                        emails: [""]
                     })
                 } else {
                     alert(data.error)
@@ -142,6 +169,36 @@ export default function StaffRegister() {
                         value={form.date_of_birth}
                         onChange={handleChange}
                     />
+                </div>
+                <div className="mb-4">
+                    <label className="font-bold text-xl">Phone Numbers:</label>
+                    {form.phone_numbers.map((phone, idx) => (
+                        <div key={idx} className="flex items-center mt-2">
+                            <input
+                                type="text"
+                                className="p-2 rounded-md w-full"
+                                value={phone}
+                                onChange={(e) => handleArrayChange(e, "phone_numbers", idx)}
+                            />
+                            <button type="button" onClick={() => removeField("phone_numbers", idx)} className="ml-2 text-red-500 font-bold">X</button>
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => addField("phone_numbers")} className="mt-2 bg-blue-200 p-2 rounded-md">Add Phone Number</button>
+                </div>
+                <div className="mb-4">
+                    <label className="font-bold text-xl">Emails:</label>
+                    {form.emails.map((email, idx) => (
+                        <div key={idx} className="flex items-center mt-2">
+                            <input
+                                type="email"
+                                className="p-2 rounded-md w-full"
+                                value={email}
+                                onChange={(e) => handleArrayChange(e, "emails", idx)}
+                            />
+                            <button type="button" onClick={() => removeField("emails", idx)} className="ml-2 text-red-500 font-bold">X</button>
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => addField("emails")} className="mt-2 bg-blue-200 p-2 rounded-md">Add Email</button>
                 </div>
                 <button className="font-bold text-xl bg-green-200 py-3 rounded-md text-center w-full mb-4">Submit</button>
             </form>

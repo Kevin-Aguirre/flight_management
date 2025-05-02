@@ -1,13 +1,42 @@
 import { useState, useEffect } from "react"
+import { filterTickets } from "../lib/ticket";
+import { TicketSearchForm } from "./TicketSearchForm";
+import { useNavigate } from "react-router-dom";
+
 
 export default function ViewReports({user, setUser}) {
+    const navigate = useNavigate()
+    
+    useEffect(() => {
+        if (user?.type !== "staff") {
+            navigate('/')
+        }
+        
+    })
     const [tickets, setTickets] = useState([])
+    const [appliedFilters, setAppliedFilters] = useState({
+        lowerBound: '',
+        upperBound: ''
+    });
 
+    const handleApplyFilters = (filters) => {
+        setAppliedFilters(filters);
+    };
+
+    const handleClearFilters = () => {
+        setAppliedFilters({
+            lowerBound: '',
+            upperBound: ''
+        });
+    };
+
+    const filteredTickets = filterTickets(tickets, appliedFilters)
+    
     useEffect(() => {
         fetch(`http://127.0.0.1:5002/api/get-reports`)
             .then(res => res.json())
             .then(data => {
-                setTickets(data)
+                setTickets(data.filter((ticket) => ticket.airline_name === user.user.airline_name))
             })
 
     }, [])
@@ -25,7 +54,7 @@ export default function ViewReports({user, setUser}) {
                 </tr>            
             </thead>
             <tbody>
-                {tickets.map((ticket, i) => (
+                {filteredTickets.map((ticket, i) => (
                     <tr key={i} className={i%2==0 ? "bg-white" : "bg-gray-50"}>
                         <td className="px-4 py-2 border-b">{ticket.flight_number}</td>
                         <td className="px-4 py-2 border-b">{ticket.departure_time}</td>
@@ -41,6 +70,11 @@ export default function ViewReports({user, setUser}) {
 
     return (
         <div className="mx-10 my-5 rounded-md bg-blue-100 p-4">
+            <TicketSearchForm
+                onApply={handleApplyFilters}
+                onClear={handleClearFilters}
+                defaultValues={appliedFilters}
+            />
             <h1 className="text-center font-bold text-3xl my-2">{user.user.airline_name} Tickets</h1>
             <hr/>
             {table}

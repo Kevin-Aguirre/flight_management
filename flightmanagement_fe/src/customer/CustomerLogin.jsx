@@ -40,7 +40,7 @@ export default function CustomerLogin({ user, setUser}) {
                     alert('Successfully logged in as customer.')
                     localStorage.setItem('data', JSON.stringify(data))
                     setUser(data)
-                    navigate('/my-flights') 
+                    navigate('/') 
 
                 } else {
                     alert(data.error)

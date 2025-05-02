@@ -9,6 +9,7 @@ import CustomerRegister from './customer/CustomerRegister';
 import CustomerLogin from './customer/CustomerLogin'
 import MyFlights from './customer/MyFlights'
 
+import Home from './components/Home';
 
 import StaffRegister from './staff/StaffRegister';
 import StaffLogin from './staff/StaffLogin'
@@ -67,7 +68,7 @@ function App() {
             } 
           />
           <Route 
-            path="/future-flights" 
+            path="/flights" 
             element={
               <Flights 
                 user={user}
@@ -115,6 +116,15 @@ function App() {
             path="/view-reports" 
             element={
               <ViewReports 
+                user={user}
+                setUser={setUser}
+              />
+            } 
+          />
+          <Route 
+            path="/" 
+            element={
+              <Home 
                 user={user}
                 setUser={setUser}
               />

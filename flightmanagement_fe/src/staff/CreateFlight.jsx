@@ -1,6 +1,16 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateFlight({ user, setUser }) {
+    const navigate = useNavigate()
+    
+    useEffect(() => {
+        if (user?.type !== "staff") {
+            navigate('/')
+        }
+        
+    })
+    
     const [planes, setPlanes] = useState([])
     const [airports, setAirports] = useState([])
 

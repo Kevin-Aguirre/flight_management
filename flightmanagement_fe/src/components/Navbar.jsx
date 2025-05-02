@@ -16,9 +16,9 @@ export default function Navbar({user, setUser}) {
 
     return (
         <nav className="py-4 px-8 font-bold text-white bg-blue-500 flex justify-between items-center">
-            <p className="text-2xl">
+            <Link to={'/'} className="text-2xl">
                 Flight Reservation System
-            </p>
+            </Link>
 
             <div className="text-xl">
                 {
@@ -46,8 +46,8 @@ export default function Navbar({user, setUser}) {
                         </Link>    
                     </>
                 }
-                <Link to="/future-flights" className="bg-blue-600 rounded-md px-3 py-2 ml-5">
-                    View Future Flights
+                <Link to="/flights" className="bg-blue-600 rounded-md px-3 py-2 ml-5">
+                    View Flights
                 </Link>
                 {
                     !user
