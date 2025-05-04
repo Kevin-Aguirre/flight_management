@@ -33,10 +33,10 @@ export default function ViewReports({user, setUser}) {
     const filteredTickets = filterTickets(tickets, appliedFilters)
     
     useEffect(() => {
-        fetch(`http://127.0.0.1:5002/api/get-reports`)
+        fetch(`http://127.0.0.1:5002/api/get-reports?airline_name=${encodeURIComponent(user.user.airline_name)}`)
             .then(res => res.json())
             .then(data => {
-                setTickets(data.filter((ticket) => ticket.airline_name === user.user.airline_name))
+                setTickets(data)
             })
 
     }, [])

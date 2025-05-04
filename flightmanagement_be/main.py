@@ -33,6 +33,7 @@ def hash_password(password):
 
 @app.route('/api/get-reports', methods=['GET'])
 def getReports():
+    airline_name = request.args.get('airline_name')  
     conn = pymysql.connect(
         host=DB_HOST, 
         user=DB_USER, 
@@ -42,20 +43,27 @@ def getReports():
         cursorclass=pymysql.cursors.DictCursor
     )
     cursor = conn.cursor()
-    query = "SELECT * FROM Ticket WHERE email IS NOT NULL;"
-    cursor.execute(query)
+    query = """
+    SELECT * 
+    FROM Ticket 
+    WHERE email IS NOT NULL
+    AND airline_name = %s;
+    """
+    cursor.execute(query, (airline_name))
     data = cursor.fetchall()
     return jsonify(data)
 
 
 @app.route('/api/get-flights', methods=['GET'])
 def getFlights():
-    conn = pymysql.connect(host=DB_HOST, 
-                           user=DB_USER, 
-                           password=DB_PWD, 
-                           db=DB_DB, 
-                           charset='utf8mb4', 
-                           cursorclass=pymysql.cursors.DictCursor)
+    conn = pymysql.connect(
+        host=DB_HOST, 
+        user=DB_USER, 
+        password=DB_PWD, 
+        db=DB_DB, 
+        charset='utf8mb4', 
+        cursorclass=pymysql.cursors.DictCursor
+    )
     cursor = conn.cursor()
 
     query = """

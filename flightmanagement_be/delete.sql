@@ -1,0 +1,13 @@
+DELETE FROM Ticket;
+DELETE FROM Arrival;
+DELETE FROM Departure;
+DELETE FROM Airport;
+DELETE FROM Flight;
+DELETE FROM CustomerRating;
+DELETE FROM Customer;
+DELETE FROM AirlineStaffEmail;
+DELETE FROM AirlineStaffPhone;
+DELETE FROM AirlineStaff;
+DELETE FROM Airplane;
+DELETE FROM Airline; 
+;
