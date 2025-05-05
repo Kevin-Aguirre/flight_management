@@ -18,7 +18,7 @@ app.config.update(
 
 app.secret_key = 'some key that you will never guess'
 CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
-
+    
 """
 mysql -u root -p
 """
